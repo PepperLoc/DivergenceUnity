@@ -297,31 +297,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 233562437}
-  - component: {fileID: 233562436}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: BoardManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &233562436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 233562435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 971d49f9798e0de48b3880d80609e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 8019296828919846822, guid: 6a646a13b639e2f40a2228ea58ca4042, type: 3}
-  width: 5
-  height: 15
-  tileSpacing: 1
-  boardPosition: {x: 5.90514, y: -69, z: 998}
 --- !u!4 &233562437
 Transform:
   m_ObjectHideFlags: 0

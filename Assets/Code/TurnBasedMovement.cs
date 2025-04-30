@@ -1,11 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
-using UnityEngine.UI;
+using UnityEngine.UI; // For UI elements like health bars
 
-public class TurnBasedMovement : MonoBehaviour
+public class TurnBasedMovement : MonoBehaviour // Class name MUST match file name
 {
     public int boardWidth = 5;
     public int boardHeight = 15;
@@ -14,15 +13,15 @@ public class TurnBasedMovement : MonoBehaviour
     public int currentPlayerIndex = 0;
     public int movementRangeWidth = 3;
     public int movementRangeHeight = 5;
-    public GameObject gameOverPanel; //drag here
-    public Text gameOverText; //drag here
-    public GameObject playerUIPrefab; // Prefab for the player UI
-    public Transform uiParent; // Parent transform for the UI elements
+    public GameObject gameOverPanel;
+    public Text gameOverText;
+    public GameObject playerUIPrefab;
+    public Transform uiParent;
     private List<PlayerHealth> playerHealths = new List<PlayerHealth>();
     private GameObject[,] boardTiles;
     private int frozenTurnsRemaining = 0;
     private List<int> frozenPlayers = new List<int>();
-    private Dictionary<int, Vector2Int> teleporterPositions = new Dictionary<int, Vector2Int>(); // Store teleporter positions
+    private Dictionary<int, Vector2Int> teleporterPositions = new Dictionary<int, Vector2Int>();
     private int teleporterCounter = 0;
 
     void Start()
@@ -46,9 +45,9 @@ public class TurnBasedMovement : MonoBehaviour
         tileSpacing = boardGenerator.tileSpacing;
         boardTiles = new GameObject[boardWidth, boardHeight];
         PopulateBoardTilesArray();
-        InitializePlayers(); // Setup players, health, and UI
+        InitializePlayers();
         SetInitialPlayerPositions();
-        currentPlayerIndex = Random.Range(0, players.Count); // Random first player
+        currentPlayerIndex = Random.Range(0, players.Count);
         UpdateCurrentTilePosition();
         HighlightAvailableMoves();
         gameOverPanel.SetActive(false);
@@ -83,13 +82,11 @@ public class TurnBasedMovement : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            // Add PlayerHealth component
             PlayerHealth playerHealth = players[i].AddComponent<PlayerHealth>();
             playerHealth.maxHealth = 100;
             playerHealth.currentHealth = 100;
             playerHealths.Add(playerHealth);
 
-            // Create UI for each player
             if (playerUIPrefab != null && uiParent != null)
             {
                 GameObject playerUI = Instantiate(playerUIPrefab, uiParent);
@@ -97,7 +94,7 @@ public class TurnBasedMovement : MonoBehaviour
                 if (uiController != null)
                 {
                     uiController.SetPlayer(players[i]);
-                    uiController.SetHealthBar(playerHealth.healthBar); // Pass the health bar
+                    uiController.SetHealthBar(playerHealth.healthBar);
                     playerHealth.uiController = uiController;
                 }
                 else
@@ -188,7 +185,7 @@ public class TurnBasedMovement : MonoBehaviour
         if (frozenPlayers.Contains(currentPlayerIndex))
         {
             Debug.Log($"Player {currentPlayerIndex + 1} is frozen!");
-            EndTurn(); // Skip frozen player's turn
+            EndTurn();
             return;
         }
         Debug.Log($"It's now Player {currentPlayerIndex + 1}'s turn.");
@@ -248,7 +245,7 @@ public class TurnBasedMovement : MonoBehaviour
                     if (tileRenderer != null)
                     {
                         Material defaultMaterial = new Material(Shader.Find("Standard"));
-                        defaultMaterial.color = Color.white; //change to your default color
+                        defaultMaterial.color = Color.white;
                         tileRenderer.material = defaultMaterial;
                         ClickableTile clickable = boardTiles[x, z].GetComponent<ClickableTile>();
                         if (clickable != null)
@@ -283,7 +280,7 @@ public class TurnBasedMovement : MonoBehaviour
             {
                 frozenPlayers.Add(opponentIndex);
             }
-            frozenTurnsRemaining = turns; //set
+            frozenTurnsRemaining = turns;
             Debug.Log($"Player {opponentIndex + 1} frozen for {turns} turns");
         }
     }
@@ -327,7 +324,6 @@ public class TurnBasedMovement : MonoBehaviour
     void HandlePlayerDeath(GameObject player)
     {
         Debug.Log($"{player.name} has been defeated!");
-        // Remove the player from the list
         int playerIndex = players.IndexOf(player);
         if (playerIndex != -1)
         {
@@ -355,7 +351,7 @@ public class TurnBasedMovement : MonoBehaviour
         }
     }
 
-    public void RestartGame() //connect to button
+    public void RestartGame()
     {
         Application.LoadLevel(Application.loadedLevel);
     }

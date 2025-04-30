@@ -1,8 +1,6 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Random = UnityEngine.Random;
-using UnityEngine.UI; // For UI elements like health bars
+using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
@@ -149,4 +147,12 @@ public class BoardGenerator : MonoBehaviour
         }
         return Vector3.zero;
     }
+}
+
+public enum SpecialTileType
+{
+    Landmine,
+    Freeze,
+    Paintball,
+    Teleporter
 }

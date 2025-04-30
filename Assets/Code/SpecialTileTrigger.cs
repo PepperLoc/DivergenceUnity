@@ -1,5 +1,6 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SpecialTileTrigger : MonoBehaviour
 {
@@ -7,53 +8,52 @@ public class SpecialTileTrigger : MonoBehaviour
     public string playerTag = "Player";
     public int damage = 0;
     public int freezeTurns = 0;
-    public Color paintballColor = Color.white;
+    public Color paintballColor = Color.magenta;
     public bool isTeleporter = false;
-    public bool canTeleportToOccupied = false;  //redundant but keep for now
+    public int teleporterId;
     private bool hasTriggered = false;
-    public int teleporterId = -1; //used to identify pairs.
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (!hasTriggered && other.CompareTag(playerTag))
+        if (hasTriggered) return;
+        if (other.gameObject.tag == playerTag)
         {
             hasTriggered = true;
-            TurnBasedMovement turnManager = FindObjectOfType<TurnBasedMovement>(); //find
-            if (turnManager == null)
-            {
-                Debug.LogError("TurnBasedMovement not found");
-                return;
-            }
-
             switch (tileType)
             {
                 case SpecialTileType.Landmine:
-                    turnManager.DamagePlayer(other.gameObject, damage);
-                    Destroy(gameObject.transform.GetChild(0).gameObject); //destroys the child object of the tile
-                    Destroy(this);
+                    TurnBasedMovement tbm = FindObjectOfType<TurnBasedMovement>();
+                    if (tbm != null)
+                    {
+                        tbm.DamagePlayer(other.gameObject, damage);
+                    }
+                    Destroy(gameObject);
                     break;
                 case SpecialTileType.Freeze:
-                    turnManager.FreezeOpponent(other.gameObject, freezeTurns);
+                    TurnBasedMovement tbmFreeze = FindObjectOfType<TurnBasedMovement>();
+                    if (tbmFreeze != null)
+                    {
+                        tbmFreeze.FreezeOpponent(other.gameObject, freezeTurns);
+                    }
+                    Destroy(gameObject);
                     break;
                 case SpecialTileType.Paintball:
-                    turnManager.PaintballOpponent(other.gameObject, paintballColor);
+                    TurnBasedMovement tbmPaintball = FindObjectOfType<TurnBasedMovement>();
+                    if (tbmPaintball != null)
+                    {
+                        tbmPaintball.PaintballOpponent(other.gameObject, paintballColor);
+                    }
+                    Destroy(gameObject);
                     break;
                 case SpecialTileType.Teleporter:
-                    turnManager.TeleportPlayer(other.gameObject, teleporterId);
-                    break;
-                case SpecialTileType.None:
-                    turnManager.SkipTurn(other.gameObject);
+                    TurnBasedMovement tbmTeleport = FindObjectOfType<TurnBasedMovement>();
+                    if (tbmTeleport != null)
+                    {
+                        tbmTeleport.TeleportPlayer(other.gameObject, teleporterId);
+                    }
                     break;
             }
         }
     }
 }
 
-public enum SpecialTileType
-{
-    None,
-    Landmine,
-    Freeze,
-    Paintball,
-    Teleporter
-}
