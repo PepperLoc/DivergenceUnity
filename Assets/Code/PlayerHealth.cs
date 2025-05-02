@@ -38,3 +38,4 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthBar();
     }
 }
+

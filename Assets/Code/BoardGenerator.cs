@@ -148,11 +148,3 @@ public class BoardGenerator : MonoBehaviour
         return Vector3.zero;
     }
 }
-
-public enum SpecialTileType
-{
-    Landmine,
-    Freeze,
-    Paintball,
-    Teleporter
-}

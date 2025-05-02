@@ -17,12 +17,15 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
     public Text gameOverText;
     public GameObject playerUIPrefab;
     public Transform uiParent;
+    public Transform Canvas; // Added this line
     private List<PlayerHealth> playerHealths = new List<PlayerHealth>();
     private GameObject[,] boardTiles;
     private int frozenTurnsRemaining = 0;
     private List<int> frozenPlayers = new List<int>();
     private Dictionary<int, Vector2Int> teleporterPositions = new Dictionary<int, Vector2Int>();
     private int teleporterCounter = 0;
+    private Vector3Int currentTilePosition; // Added here
+
 
     void Start()
     {
@@ -126,6 +129,8 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         UpdateCurrentTilePosition();
     }
 
+
+
     void UpdateCurrentTilePosition()
     {
         Vector3 playerPos = players[currentPlayerIndex].transform.position;
@@ -133,6 +138,11 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         int z = Mathf.RoundToInt((playerPos.z - transform.position.z) / tileSpacing);
         currentTilePosition = new Vector3Int(Mathf.Clamp(x, 0, boardWidth - 1), 0, Mathf.Clamp(z, 0, boardHeight - 1));
         Debug.Log($"Current Player {currentPlayerIndex + 1} is at tile: {currentTilePosition.x}, {currentTilePosition.z}");
+    }
+
+    bool IsCurrentPlayerFrozen()
+    {
+        return frozenPlayers.Contains(currentPlayerIndex);
     }
 
     public void AttemptMove(GameObject targetTile)
@@ -370,4 +380,14 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         }
         return false;
     }
+
+    public Vector3 GetTilePosition(int x, int z)
+    {
+        if (x >= 0 && x < boardWidth && z >= 0 && z < boardHeight)
+        {
+            return boardTiles[x, z].transform.position;
+        }
+        return Vector3.zero;
+    }
 }
+

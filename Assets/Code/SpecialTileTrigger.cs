@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SpecialTileType
+{
+    Landmine,
+    Freeze,
+    Paintball,
+    Teleporter
+}
+
 public class SpecialTileTrigger : MonoBehaviour
 {
     public SpecialTileType tileType;

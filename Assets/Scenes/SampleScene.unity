@@ -297,6 +297,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 233562437}
+  - component: {fileID: 233562438}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -319,6 +320,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &233562438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233562435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 971d49f9798e0de48b3880d80609e315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 8019296828919846822, guid: 6a646a13b639e2f40a2228ea58ca4042, type: 3}
+  width: 15
+  height: 5
+  tileSpacing: 100
+  boardPosition: {x: 0.00486918, y: 0.0008259225, z: -0.009996189}
+  tileScale: {x: 5, y: 55, z: 5}
+  landminePrefab: {fileID: 3252139981129928964, guid: 19c5420201518d243980dfef046f4bed, type: 3}
+  freezeTilePrefab: {fileID: 3546416618466206263, guid: 4dd2dd99683f926488b74ddf772117d0, type: 3}
+  paintballTilePrefab: {fileID: 2639912996333164220, guid: 9ebb6d06fecc1dc478b0b5777e80ea14, type: 3}
+  teleporterTilePrefab: {fileID: 3077351683580063049, guid: 873232725a8e4b74b8a156f1b024a671, type: 3}
+  numLandmines: 10
+  numFreezeTiles: 5
+  numPaintballTiles: 5
+  numTeleporterTiles: 2
+  landmineDamage: 15
+  freezeTurns: 1
+  paintballColor: {r: 1, g: 0, b: 1, a: 1}
+  canTeleportToOccupied: 0
 --- !u!4 &258073262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58a972f7929bdb948bacdae1440a3362, type: 3}
@@ -2962,75 +2993,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9afa5e82b5343024296fbb5a066fcdb1, type: 3}
---- !u!1 &2060867068
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2060867070}
-  - component: {fileID: 2060867069}
-  - component: {fileID: 2060867071}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2060867069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060867068}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 971d49f9798e0de48b3880d80609e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 8019296828919846822, guid: 6a646a13b639e2f40a2228ea58ca4042, type: 3}
-  width: 15
-  height: 5
-  tileSpacing: 10
-  boardPosition: {x: 15, y: 15, z: 990}
---- !u!4 &2060867070
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060867068}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2060867071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060867068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeedc4fddd0f00e40a4c8bf318778c7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  landminePrefab: {fileID: 3252139981129928964, guid: 19c5420201518d243980dfef046f4bed, type: 3}
-  width: 15
-  height: 5
-  landmineSpawnChance: 0.3
-  playerTag: Player
-  damageAmount: 15
-  tileSpacing: 100
 --- !u!1 &2114370025
 GameObject:
   m_ObjectHideFlags: 0
@@ -3607,7 +3569,6 @@ SceneRoots:
   - {fileID: 1408229411}
   - {fileID: 292143508}
   - {fileID: 994748614}
-  - {fileID: 2060867070}
   - {fileID: 6726745211394325088}
   - {fileID: 5537709688590402309}
   - {fileID: 4227084879371907828}
