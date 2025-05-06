@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638792780044785222
-    m_Hash: 4030701192
+      ticks: 638816105070439878
+    m_Hash: 4282987027
   m_LockFileStatus:
     m_FilePath: C:/Users/AGS1B/Documents/GitHub/DivergenceUnity/Divergence/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638792780044805240
-    m_Hash: 2409112149
+      ticks: 638816105070449846
+    m_Hash: 1598594549
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -121,12 +121,14 @@ m_ResolvedPackages:
     - 2.5.2
     - 2.6.0
     - 2.7.1
+    - 2.8.1
     compatible:
     - 2.4.4
     - 2.5.1
     - 2.5.2
     - 2.6.0
     - 2.7.1
+    - 2.8.1
     recommended: 2.4.4
     deprecated: []
   dependencies: []
