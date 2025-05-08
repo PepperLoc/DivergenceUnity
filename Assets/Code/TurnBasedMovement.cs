@@ -4,6 +4,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI; // For UI elements like health bars
 
+
 public class TurnBasedMovement : MonoBehaviour // Class name MUST match file name
 {
     public int boardWidth = 5;
@@ -11,8 +12,8 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
     public float tileSpacing = 1.0f;
     public List<GameObject> players;
     public int currentPlayerIndex = 0;
-    public int movementRangeWidth = 3;
-    public int movementRangeHeight = 5;
+    public int movementRangeWidth = 10;
+    public int movementRangeHeight = 10;
     public GameObject gameOverPanel;
     public Text gameOverText;
     public GameObject playerUIPrefab;
@@ -25,6 +26,7 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
     private Dictionary<int, Vector2Int> teleporterPositions = new Dictionary<int, Vector2Int>();
     private int teleporterCounter = 0;
     private Vector3Int currentTilePosition; // Added here
+    public BoardGenerator boardGenerator;
 
 
     void Start()
@@ -46,8 +48,7 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         boardWidth = boardGenerator.width;
         boardHeight = boardGenerator.height;
         tileSpacing = boardGenerator.tileSpacing;
-        boardTiles = new GameObject[boardWidth, boardHeight];
-        PopulateBoardTilesArray();
+        boardTiles = new GameObject[boardWidth, boardHeight];       
         InitializePlayers();
         SetInitialPlayerPositions();
         currentPlayerIndex = Random.Range(0, players.Count);
@@ -156,24 +157,79 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
 
         if (targetTile == null) return;
 
-        string[] parts = targetTile.name.Split('_');
-        if (parts.Length == 3 && parts[0] == "Tile" && int.TryParse(parts[1], out int targetX) && int.TryParse(parts[2], out int targetZ))
-        {
-            int deltaX = Mathf.Abs(targetX - currentTilePosition.x);
-            int deltaZ = Mathf.Abs(targetZ - currentTilePosition.z);
+        // Get the tile's name
+        string tileName = targetTile.name;
 
-            if (deltaX <= movementRangeWidth / 2 && deltaZ <= movementRangeHeight / 2 && deltaX + deltaZ > 0)
+        //split the tile name.
+        string[] parts = targetTile.name.Split('_');
+
+        if (parts.Length == 3 && parts[0] == "Tile")
+        {
+            if (int.TryParse(parts[1], out int targetX) && int.TryParse(parts[2], out int targetZ))
             {
-                players[currentPlayerIndex].transform.position = targetTile.transform.position + Vector3.up * 0.5f;
-                UpdateCurrentTilePosition();
-                EndTurn();
+                int deltaX = Mathf.Abs(targetX - currentTilePosition.x);
+                int deltaZ = Mathf.Abs(targetZ - currentTilePosition.z);
+
+                if (deltaX <= movementRangeWidth / 2 && deltaZ <= movementRangeHeight / 2 && deltaX + deltaZ > 0)
+                {
+                    players[currentPlayerIndex].transform.position = targetTile.transform.position + Vector3.up * 0.5f;
+                    UpdateCurrentTilePosition();
+                    EndTurn();
+                }
+                else
+                {
+                    //Debug.Log("Target tile is out of movement range.");
+                }
+            }
+        }
+        else if (parts.Length == 1 && parts[0] == "Tile")
+        {
+            // Find the tile coordinates based on its position in the boardTiles array.
+            Vector3 targetTilePosition = targetTile.transform.position;
+            Vector2Int targetTileCoordinates = GetTileCoordinates(targetTilePosition);
+
+            if (targetTileCoordinates.x != -1 && targetTileCoordinates.y != -1) // Check if valid coordinates were found
+            {
+                int deltaX = Mathf.Abs(targetTileCoordinates.x - currentTilePosition.x);
+                int deltaZ = Mathf.Abs(targetTileCoordinates.y - currentTilePosition.z);
+
+                if (deltaX <= movementRangeWidth / 2 && deltaZ <= movementRangeHeight / 2 && deltaX + deltaZ > 0)
+                {
+                    players[currentPlayerIndex].transform.position = targetTile.transform.position + Vector3.up * 0.5f;
+                    UpdateCurrentTilePosition();
+                    EndTurn();
+                }
+                else
+                {
+                    Debug.Log("Target tile is out of movement range.");
+                }
             }
             else
             {
-                Debug.Log("Target tile is out of movement range.");
+                Debug.LogError("Could not find coordinates of clicked tile.");
             }
         }
+        else
+        {
+            Debug.LogError("Invalid tile name format: " + targetTile.name);
+        }
     }
+
+    Vector2Int GetTileCoordinates(Vector3 tilePosition)
+    {
+        for (int x = 0; x < boardWidth; x++)
+        {
+            for (int z = 0; z < boardHeight; z++)
+            {
+                if (boardTiles[x, z] != null && Vector3.Distance(boardTiles[x, z].transform.position, tilePosition) < 0.1f) // Use a small threshold
+                {
+                    return new Vector2Int(x, z);
+                }
+            }
+        }
+        return new Vector2Int(-1, -1); // Return -1,-1 if not found
+    }
+
 
     void EndTurn()
     {

@@ -51,9 +51,19 @@ public class BoardGenerator : MonoBehaviour
             {
                 Vector3 position = new Vector3(x * tileSpacing, 0, y * tileSpacing) + boardPosition;
                 GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity);
-                tile.transform.parent = transform;
                 tile.name = "Tile_" + x + "_" + y;
                 tile.transform.localScale = tileScale;
+                ClickableTile clickableTile = tile.AddComponent<ClickableTile>();
+                TurnBasedMovement turnBasedMovement = FindObjectOfType<TurnBasedMovement>();
+                if (turnBasedMovement != null)
+                {
+                    clickableTile.turnBasedMovement = turnBasedMovement;
+                }
+                else
+                {
+                    Debug.LogError("TurnBasedMovement script not found in the scene. Make sure you have a GameObject with TurnBasedMovement attached.");
+                }
+                tile.transform.parent = transform;
                 boardTiles[x, y] = tile;
             }
         }

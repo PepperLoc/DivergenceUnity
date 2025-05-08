@@ -12,6 +12,10 @@ public class ClickableTile : MonoBehaviour
         {
             turnBasedMovement.AttemptMove(gameObject);
         }
+        else
+        {
+            Debug.LogError("TurnBasedMovement reference is not set on ClickableTile!");
+        }
     }
 }
 
