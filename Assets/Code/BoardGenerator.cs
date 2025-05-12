@@ -28,7 +28,7 @@ public class BoardGenerator : MonoBehaviour
     public int freezeTurns = 1;
     public Color paintballColor = Color.magenta;
     public bool canTeleportToOccupied = false;
-
+    //femboys
     private GameObject[,] boardTiles;
 
     void Start()
