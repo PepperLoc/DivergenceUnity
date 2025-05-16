@@ -48,7 +48,7 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         boardWidth = boardGenerator.width;
         boardHeight = boardGenerator.height;
         tileSpacing = boardGenerator.tileSpacing;
-        boardTiles = new GameObject[boardWidth, boardHeight];       
+        boardTiles = new GameObject[boardWidth, boardHeight];
         InitializePlayers();
         SetInitialPlayerPositions();
         currentPlayerIndex = Random.Range(0, players.Count);
@@ -163,23 +163,21 @@ public class TurnBasedMovement : MonoBehaviour // Class name MUST match file nam
         //split the tile name.
         string[] parts = targetTile.name.Split('_');
 
-        if (parts.Length == 3 && parts[0] == "Tile")
+        // Check if it's a regular tile or a special tile.
+        if (parts.Length >= 3 && parts[0].EndsWith("Tile") && int.TryParse(parts[parts.Length - 2], out int targetX) && int.TryParse(parts[parts.Length - 1], out int targetZ))
         {
-            if (int.TryParse(parts[1], out int targetX) && int.TryParse(parts[2], out int targetZ))
-            {
-                int deltaX = Mathf.Abs(targetX - currentTilePosition.x);
-                int deltaZ = Mathf.Abs(targetZ - currentTilePosition.z);
+            int deltaX = Mathf.Abs(targetX - currentTilePosition.x);
+            int deltaZ = Mathf.Abs(targetZ - currentTilePosition.z);
 
-                if (deltaX <= movementRangeWidth / 2 && deltaZ <= movementRangeHeight / 2 && deltaX + deltaZ > 0)
-                {
-                    players[currentPlayerIndex].transform.position = targetTile.transform.position + Vector3.up * 0.5f;
-                    UpdateCurrentTilePosition();
-                    EndTurn();
-                }
-                else
-                {
-                    //Debug.Log("Target tile is out of movement range.");
-                }
+            if (deltaX <= movementRangeWidth / 2 && deltaZ <= movementRangeHeight / 2 && deltaX + deltaZ > 0)
+            {
+                players[currentPlayerIndex].transform.position = targetTile.transform.position + Vector3.up * 0.5f;
+                UpdateCurrentTilePosition();
+                EndTurn();
+            }
+            else
+            {
+                //Debug.Log("Target tile is out of movement range.");
             }
         }
         else if (parts.Length == 1 && parts[0] == "Tile")

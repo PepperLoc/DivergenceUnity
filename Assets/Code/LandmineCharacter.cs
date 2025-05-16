@@ -2,28 +2,37 @@ using UnityEngine;
 
 public class LandmineTrigger : MonoBehaviour
 {
-    public int damage = 15;
-    public string playerTag = "Player";
-    private bool hasExploded = false;
+    public TurnBasedMovement turnBasedMovement; // Reference to the TurnBasedMovement script
 
-    private void OnTriggerEnter(Collider other)
+    void Start()
     {
-        if (!hasExploded && other.CompareTag(playerTag))
+        // Ensure the TurnBasedMovement script is assigned.  If not, we'll try to find it.
+        if (turnBasedMovement == null)
         {
-            hasExploded = true;
-            Debug.Log("Player stepped on a landmine! -" + damage + " health.");
-            // In a real game, you would access the player's health component here
-            // and decrease their health by the 'damage' amount.
-            // For example:
-            // PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-            // if (playerHealth != null)
-            // {
-            //     playerHealth.TakeDamage(damage);
-            // }
+            turnBasedMovement = FindObjectOfType<TurnBasedMovement>();
+            if (turnBasedMovement == null)
+            {
+                Debug.LogError("LandmineTrigger: TurnBasedMovement script not found in the scene.  Please assign it in the inspector.");
+                enabled = false; // Disable this script if we can't find the TurnBasedMovement script.
+                return;
+            }
+        }
+    }
 
-            // Optionally, you can trigger a visual effect or destroy the landmine
-            // Destroy(gameObject.GetComponentInChildren<Transform>().gameObject); // Destroy the landmine visual
-            // Destroy(this); // Destroy this trigger component
+    // This function is called when another collider enters the trigger.
+    void OnTriggerEnter(Collider other)
+    {
+        // Check if the entering object is a player.  You might need to adjust this tag check
+        // if your players are tagged differently.  It's best to use tags rather than names.
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("Stepped on landmine tile!");
+
+            // Apply damage to the player using the DamagePlayer function from TurnBasedMovement
+            // turnBasedMovement.DamagePlayer(other.gameObject, damageAmount); // This line caused the error
+
+            // You might want to destroy the landmine tile after it's triggered.
+            //Destroy(gameObject); // Uncomment this line if you want the landmine to disappear.
         }
     }
 }

@@ -3,7 +3,8 @@ guid: aeedc4fddd0f00e40a4c8bf318778c7b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - landminePrefab: {fileID: 3252139981129928964, guid: 19c5420201518d243980dfef046f4bed, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

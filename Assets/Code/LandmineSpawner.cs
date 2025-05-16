@@ -8,7 +8,6 @@ public class LandmineSpawner : MonoBehaviour
     public int height = 15;
     public float landmineSpawnChance = 0.2f;
     public string playerTag = "Player";
-    public int damageAmount = 15;
     public float tileSpacing = 1.0f; // Add this public variable for tile spacing
 
     private GameObject[,] boardTiles;
@@ -52,8 +51,6 @@ public class LandmineSpawner : MonoBehaviour
                     landmine.transform.parent = tile.transform;
 
                     LandmineTrigger trigger = tile.AddComponent<LandmineTrigger>();
-                    trigger.damage = damageAmount;
-                    trigger.playerTag = playerTag;
                 }
             }
         }
