@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +7,12 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth;
     public Image healthBar;
     public PlayerUIController uiController;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthBar();
+    }
 
     public void TakeDamage(int damage)
     {
@@ -30,12 +34,6 @@ public class PlayerHealth : MonoBehaviour
         {
             uiController.UpdateHealthText(currentHealth, maxHealth);
         }
-    }
-
-    private void Start()
-    {
-        currentHealth = maxHealth;
-        UpdateHealthBar();
     }
 }
 

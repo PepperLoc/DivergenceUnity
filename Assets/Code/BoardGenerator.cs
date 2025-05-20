@@ -167,6 +167,7 @@ public class BoardGenerator : MonoBehaviour
                     Destroy(boardTiles[x1, z1]);
                 }
                 GameObject teleporter1 = Instantiate(prefab, tilePositions[x1, z1], Quaternion.identity, parent);
+               // teleporter.tag = "teleporter";
                 teleporter1.transform.localScale = tileScale;
                 teleporter1.name = prefab.name + "_" + x1 + "_" + z1 + "_" + teleporterId1;
 
