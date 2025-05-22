@@ -7,7 +7,7 @@ public enum SpecialTileType
     Landmine,
     Freeze,
     Paintball,
-    Teleporter
+    Teleporter // Keep the enum for other purposes if needed, but the case will be removed
 }
 
 public class SpecialTileTrigger : MonoBehaviour
@@ -17,51 +17,54 @@ public class SpecialTileTrigger : MonoBehaviour
     public int damage = 0;
     public int freezeTurns = 0;
     public Color paintballColor = Color.magenta;
-    public bool isTeleporter = false;
-    public int teleporterId;
-    private bool hasTriggered = false;
+    // public bool isTeleporter = false; // No longer needed, as TeleportTile.cs handles teleporters
+    // public int teleporterId; // No longer needed, as TeleportTile.cs handles teleporters
+    private bool hasTriggered = false; // Prevents multiple triggers on the same tile instantly
 
     void OnTriggerEnter(Collider other)
     {
-        if (hasTriggered) return;
-        if (other.gameObject.tag == playerTag)
+        if (hasTriggered) return; // Prevent re-triggering if already triggered
+        if (other.gameObject.CompareTag(playerTag)) // Use CompareTag for efficiency
         {
-            hasTriggered = true;
+            hasTriggered = true; // Mark as triggered
+
+            TurnBasedMovement tbm = FindObjectOfType<TurnBasedMovement>(); // Get reference once
+            if (tbm == null)
+            {
+                Debug.LogError("TurnBasedMovement script not found in the scene for SpecialTileTrigger!");
+                return;
+            }
+
             switch (tileType)
             {
                 case SpecialTileType.Landmine:
-                    TurnBasedMovement tbm = FindObjectOfType<TurnBasedMovement>();
-                    if (tbm != null)
-                    {
-                        tbm.DamagePlayer(other.gameObject, damage);
-                    }
-                    Destroy(gameObject);
+                    tbm.DamagePlayer(other.gameObject, damage);
+                    Destroy(gameObject); // Landmine should be removed after activation
                     break;
+
                 case SpecialTileType.Freeze:
-                    TurnBasedMovement tbmFreeze = FindObjectOfType<TurnBasedMovement>();
-                    if (tbmFreeze != null)
-                    {
-                        tbmFreeze.FreezeOpponent(other.gameObject, freezeTurns);
-                    }
-                    Destroy(gameObject);
+                    tbm.FreezeOpponent(other.gameObject, freezeTurns);
+                    Destroy(gameObject); // Freeze tile should be removed after activation
                     break;
+
                 case SpecialTileType.Paintball:
-                    TurnBasedMovement tbmPaintball = FindObjectOfType<TurnBasedMovement>();
-                    if (tbmPaintball != null)
-                    {
-                        tbmPaintball.PaintballOpponent(other.gameObject, paintballColor);
-                    }
-                    Destroy(gameObject);
+                    tbm.PaintballOpponent(other.gameObject, paintballColor);
+                    Destroy(gameObject); // Paintball tile should be removed after activation
                     break;
+
                 case SpecialTileType.Teleporter:
-                    TurnBasedMovement tbmTeleport = FindObjectOfType<TurnBasedMovement>();
-                    if (tbmTeleport != null)
-                    {
-                        tbmTeleport.TeleportPlayer(other.gameObject, teleporterId);
-                    }
+                    // REMOVED: This case is handled by TeleportTile.cs directly on the teleporter prefab.
+                    // If this script is attached to a Teleporter tile, it should not be.
+                    Debug.LogWarning($"SpecialTileTrigger of type Teleporter was triggered on {gameObject.name}. This tile should be handled by TeleportTile.cs.");
+                    // Do NOT destroy the teleporter tile, as it's meant to persist.
                     break;
             }
         }
     }
-}
 
+    // Optional: Reset hasTriggered if you want the tile to be reusable after some time
+    // public void ResetTrigger()
+    // {
+    //     hasTriggered = false;
+    // }
+}

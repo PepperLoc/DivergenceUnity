@@ -454,8 +454,6 @@ MonoBehaviour:
   landmineDamage: 15
   freezeTurns: 1
   paintballColor: {r: 1, g: 0, b: 1, a: 1}
-  teleporterId1: 1
-  teleporterId2: 2
 --- !u!4 &258073262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58a972f7929bdb948bacdae1440a3362, type: 3}
@@ -1147,8 +1145,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  healthBar: {fileID: 0}
+  tbmController: {fileID: 0}
   uiController: {fileID: 0}
+  isTeleportingImmune: 0
+  teleportImmunityDuration: 0.5
+--- !u!54 &452393833
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452393825}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &452393834
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452393825}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0050000018
+  m_Height: 0.02
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.0042314255, z: 0}
 --- !u!1001 &472662358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1239,19 +1289,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031a09e892c04ae48bae2e0ef29d05c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardWidth: 5
-  boardHeight: 15
-  tileSpacing: 1
   players: []
-  currentPlayerIndex: 3
-  movementRangeWidth: 3
-  movementRangeHeight: 5
-  gameOverPanel: {fileID: 0}
-  gameOverText: {fileID: 0}
-  playerUIPrefab: {fileID: 1091756321}
-  uiParent: {fileID: 0}
-  Canvas: {fileID: 0}
-  boardGenerator: {fileID: 0}
+  boardWidth: 0
+  boardHeight: 0
+  tileSpacing: 0
+  currentActivePlayerHighlight: {fileID: 0}
+  highlightMaterial: {fileID: 0}
+  movesPerTurn: 3
+  movementSpeed: 5
+  teleportImmunityDuration: 0.7
 --- !u!4 &490505176
 Transform:
   m_ObjectHideFlags: 0
@@ -2714,9 +2760,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031a09e892c04ae48bae2e0ef29d05c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardWidth: 5
-  boardHeight: 15
-  tileSpacing: 1
   players:
   - {fileID: 1847054392}
   - {fileID: 399295268}
@@ -2724,15 +2767,14 @@ MonoBehaviour:
   - {fileID: 452393825}
   - {fileID: 2088123222}
   - {fileID: 1686688975}
-  currentPlayerIndex: 3
-  movementRangeWidth: 50
-  movementRangeHeight: 50
-  gameOverPanel: {fileID: 0}
-  gameOverText: {fileID: 0}
-  playerUIPrefab: {fileID: 166618038}
-  uiParent: {fileID: 490505176}
-  Canvas: {fileID: 1517947200}
-  boardGenerator: {fileID: 233562438}
+  boardWidth: 0
+  boardHeight: 0
+  tileSpacing: 0
+  currentActivePlayerHighlight: {fileID: 0}
+  highlightMaterial: {fileID: 0}
+  movesPerTurn: 3
+  movementSpeed: 3
+  teleportImmunityDuration: 0.7
 --- !u!4 &1091756323
 Transform:
   m_ObjectHideFlags: 0
@@ -3709,8 +3751,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  healthBar: {fileID: 0}
+  tbmController: {fileID: 0}
   uiController: {fileID: 0}
+  isTeleportingImmune: 0
+  teleportImmunityDuration: 0.5
+--- !u!54 &1686688983
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686688975}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &1686688984
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686688975}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0050000013
+  m_Height: 0.02
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.004231425, z: 0}
 --- !u!4 &1690170748 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58a972f7929bdb948bacdae1440a3362, type: 3}
@@ -4431,8 +4525,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  healthBar: {fileID: 0}
+  tbmController: {fileID: 0}
   uiController: {fileID: 0}
+  isTeleportingImmune: 0
+  teleportImmunityDuration: 0.5
+--- !u!54 &2088123230
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088123222}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &2088123231
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088123222}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0050000013
+  m_Height: 0.02
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.0042314255, z: 0}
 --- !u!1 &2114370025
 GameObject:
   m_ObjectHideFlags: 0
@@ -4979,6 +5125,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4938800395889610685, guid: 9461dcf31ec76fa45b3b06e69ed4c454, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1686688979}
+    - targetCorrespondingSourceObject: {fileID: 4938800395889610685, guid: 9461dcf31ec76fa45b3b06e69ed4c454, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1686688984}
+    - targetCorrespondingSourceObject: {fileID: 4938800395889610685, guid: 9461dcf31ec76fa45b3b06e69ed4c454, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1686688983}
   m_SourcePrefab: {fileID: 100100000, guid: 9461dcf31ec76fa45b3b06e69ed4c454, type: 3}
 --- !u!1001 &5537709688590402309
 PrefabInstance:
@@ -5055,6 +5207,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8678608598371821704, guid: b40b5c269a2c65a49a0527a37de667c8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 452393829}
+    - targetCorrespondingSourceObject: {fileID: 8678608598371821704, guid: b40b5c269a2c65a49a0527a37de667c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 452393834}
+    - targetCorrespondingSourceObject: {fileID: 8678608598371821704, guid: b40b5c269a2c65a49a0527a37de667c8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 452393833}
   m_SourcePrefab: {fileID: 100100000, guid: b40b5c269a2c65a49a0527a37de667c8, type: 3}
 --- !u!1001 &6726745211394325088
 PrefabInstance:
@@ -5131,6 +5289,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1689239644346275711, guid: 837f70c388522b54fa5f0138d4374533, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2088123226}
+    - targetCorrespondingSourceObject: {fileID: 1689239644346275711, guid: 837f70c388522b54fa5f0138d4374533, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2088123231}
+    - targetCorrespondingSourceObject: {fileID: 1689239644346275711, guid: 837f70c388522b54fa5f0138d4374533, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2088123230}
   m_SourcePrefab: {fileID: 100100000, guid: 837f70c388522b54fa5f0138d4374533, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
